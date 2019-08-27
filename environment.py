@@ -19,7 +19,7 @@ class Env:
 
         self.curr_time = 0
 
-        # set up random seed
+        # set up random seed test
         if self.pa.unseen:
             np.random.seed(314159)
         else:

@@ -9,7 +9,7 @@ import pg_network
 import other_agents
 import job_distribution
 
-np.set_printoptions(threshold='nan')
+np.set_printoptions(threshold='sys.maxsize')
 
 
 def add_sample(X, y, idx, X_to_add, y_to_add):
@@ -31,7 +31,6 @@ def iterate_minibatches(inputs, targets, batchsize, shuffle=False):
 
 
 def launch(pa, pg_resume=None, render=False, repre='image', end='no_new_job'):
-
     env = environment.Env(pa, render=False, repre=repre, end=end)
 
     pg_learner = pg_network.PGLearner(pa)
@@ -83,7 +82,6 @@ def launch(pa, pg_resume=None, render=False, repre='image', end='no_new_job'):
             a = evaluate_policy(env.machine, env.job_slot)
 
             if counter < pa.simu_len * pa.num_ex * mem_alloc:
-
                 add_sample(X, y, counter, ob, a)
                 counter += 1
 
@@ -153,7 +151,6 @@ def launch(pa, pg_resume=None, render=False, repre='image', end='no_new_job'):
         sys.stdout.flush()
 
         if epoch % pa.output_freq == 0:
-
             net_file = open(pa.output_filename + '_net_file_' + str(epoch) + '.pkl', 'wb')
             cPickle.dump(pg_learner.return_net_params(), net_file, -1)
             net_file.close()
@@ -162,20 +159,19 @@ def launch(pa, pg_resume=None, render=False, repre='image', end='no_new_job'):
 
 
 def main():
-
     import parameters
 
     pa = parameters.Parameters()
 
-    pa.simu_len = 1000  # 1000
-    pa.num_ex = 100  # 100
-    pa.num_nw = 10
-    pa.num_seq_per_batch = 20
-    pa.output_freq = 50
+    pa.simu_len = 50  # 1000
+    pa.num_ex = 1000  # 100
+    pa.num_nw = 5  # 10
+    pa.num_seq_per_batch = 10  # 20
+    pa.output_freq = 10
 
     # pa.max_nw_size = 5
     # pa.job_len = 5
-    pa.new_job_rate = 0.3
+    pa.new_job_rate = 0.7  # 0.3
 
     pa.episode_max_length = 10000  # 2000
 
